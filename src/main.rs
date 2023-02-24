@@ -10,8 +10,9 @@ use tokio_util::codec::{BytesCodec, Framed};
 #[tokio::main(flavor = "multi_thread")]
 async fn main() -> Result<()> {
     let listener = TcpListener::bind("0.0.0.0:8080").await?;
-    let mut handles = JoinSet::new();
+    println!("Echo is listening to connections...");
 
+    let mut handles = JoinSet::new();
     while let core::result::Result::Ok(res) = listener.accept().await {
         let stream = res.0;
         handles.spawn(async move { work_connection(stream).await });
