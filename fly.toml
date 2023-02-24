@@ -1,21 +1,18 @@
-# fly.toml file generated for holy-grass-8371 on 2021-04-06T14:31:33-04:00
+# fly.toml file generated for zebra-echo on 2023-02-24T20:39:30Z
 
-app = "hernan-echo"
-
+app = "zebra-echo"
 kill_signal = "SIGINT"
 kill_timeout = 5
-
-[experimental]
-# required because we can't infer your binary's name
-cmd = "./echo"
 
 [env]
 PORT = "8080"
 
+[experimental]
+cmd = "./echo"
+
 [[services]]
 internal_port = 8080
 protocol = "tcp"
-
 [services.concurrency]
 hard_limit = 25
 soft_limit = 20
