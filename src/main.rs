@@ -14,6 +14,7 @@ async fn main() -> Result<()> {
 
     let mut handles = JoinSet::new();
     while let core::result::Result::Ok(res) = listener.accept().await {
+        println!("New connection from: {}", res.1);
         let stream = res.0;
         handles.spawn(async move { work_connection(stream).await });
     }
@@ -27,8 +28,13 @@ async fn work_connection(stream: TcpStream) -> Result<()> {
     let mut framed = Framed::new(stream, BytesCodec::new());
     while let Some(message) = framed.next().await {
         let bytes = message?;
+        println!("Message: {}", String::from_utf8_lossy(&bytes));
         framed.send(bytes).await?;
     }
 
+    println!(
+        "No more frames from: {}",
+        framed.into_inner().peer_addr().unwrap()
+    );
     Ok(())
 }
